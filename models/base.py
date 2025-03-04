@@ -26,6 +26,7 @@ class BaseLearner(object):
         self._device = args["device"][0]
         self._multiple_gpus = args["device"]
         self.args = args
+        self.eval_cnn_times = []
 
     @property
     def exemplar_size(self):
@@ -150,6 +151,7 @@ class BaseLearner(object):
         return np.around(tensor2numpy(correct) * 100 / total, decimals=2)
 
     def _eval_cnn(self, loader):
+        start_time = time.time()
         self._network.eval()
         y_pred, y_true = [], []
         for _, (_, inputs, targets) in enumerate(loader):
@@ -163,6 +165,14 @@ class BaseLearner(object):
             ]  # [bs, topk]
             y_pred.append(predicts.cpu().numpy())
             y_true.append(targets.cpu().numpy())
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        self.eval_cnn_times.append(elapsed_time)
+        avg_time = sum(self.eval_cnn_times) / len(self.eval_cnn_times)
+    
+        print(f"\n⏳ Time taken for _eval_cnn: {elapsed_time:.4f} seconds")
+        print(f"📊 Average time for _eval_cnn calls: {avg_time:.4f} seconds")
+
 
         return np.concatenate(y_pred), np.concatenate(y_true)  # [N, topk]
 
