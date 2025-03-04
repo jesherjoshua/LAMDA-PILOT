@@ -35,6 +35,7 @@ class Learner(BaseLearner):
 
         self.moni_adam = args["moni_adam"]
         self.adapter_num = args["adapter_num"]
+        self.eval_cnn_times = [] 
         
         if self.moni_adam:
             self.use_init_ptm = True
@@ -373,6 +374,8 @@ class Learner(BaseLearner):
         return np.around(tensor2numpy(correct) * 100 / total, decimals=2)
 
     def _eval_cnn(self, loader):
+        
+        start_time = time.time()
         calc_task_acc = True
         
         if calc_task_acc:
@@ -412,6 +415,13 @@ class Learner(BaseLearner):
                 pred_task_y = torch.max(task_logits, dim=1)[1]
                 task_acc += (pred_task_y.cpu() == targets).sum()
                 total += len(targets)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        self.eval_cnn_times.append(elapsed_time)
+        avg_time = sum(self.eval_cnn_times) / len(self.eval_cnn_times)
+    
+        print(f"\n⏳ Time taken for _eval_cnn: {elapsed_time:.4f} seconds")
+        print(f"📊 Average time for _eval_cnn calls: {avg_time:.4f} seconds")
 
         if calc_task_acc:
             logging.info("Task correct: {}".format(tensor2numpy(task_correct) * 100 / total))
