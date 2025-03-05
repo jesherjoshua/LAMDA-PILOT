@@ -10,7 +10,7 @@ from utils.inc_net import MOSNet
 from models.base import BaseLearner
 from utils.toolkit import tensor2numpy, target2onehot
 from torch.distributions.multivariate_normal import MultivariateNormal
-
+import time
 
 # tune the model at first session with vpt, and then conduct simple shot.
 num_workers = 8
