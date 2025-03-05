@@ -9,7 +9,7 @@ from models.base import BaseLearner
 from utils.inc_net import SLCANet
 from torch.distributions.multivariate_normal import MultivariateNormal
 from tqdm import tqdm
-
+import time
 num_workers = 8
 
 class Learner(BaseLearner):
