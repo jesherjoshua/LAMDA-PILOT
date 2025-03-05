@@ -32,6 +32,7 @@ class Learner(BaseLearner):
         self.min_lr = args["min_lr"] if args["min_lr"] is not None else 1e-8
         self.args = args
         self.ensemble = args["ensemble"]
+        self.eval_cnn_times = []
 
         for n, p in self._network.backbone.named_parameters():
             if 'adapter' not in n and 'head' not in n:
@@ -355,6 +356,7 @@ class Learner(BaseLearner):
             # return 0.0
     
     def _eval_cnn(self, loader):
+        start_time = time.time()
         self._network.eval()
         y_pred, y_true = [], []
         orig_y_pred = []
@@ -409,6 +411,14 @@ class Learner(BaseLearner):
             ]  # [bs, topk]
             y_pred.append(predicts.cpu().numpy())
             y_true.append(targets.cpu().numpy())
+                # 🔹 Store execution time and calculate average
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        self.eval_cnn_times.append(elapsed_time)
+        avg_time = sum(self.eval_cnn_times) / len(self.eval_cnn_times)
+    
+        print(f"\n⏳ Time taken for _eval_cnn: {elapsed_time:.4f} seconds")
+        print(f"📊 Average time for _eval_cnn calls: {avg_time:.4f} seconds")
 
         orig_acc = (np.concatenate(orig_y_pred) == np.concatenate(y_true)).sum() * 100 / len(np.concatenate(y_true))
         logging.info("the accuracy of the original model:{}".format(np.around(orig_acc, 2)))
