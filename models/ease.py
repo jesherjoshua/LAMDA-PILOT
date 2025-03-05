@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from utils.inc_net import EaseNet
 from models.base import BaseLearner
 from utils.toolkit import tensor2numpy
-
+import time 
 num_workers = 8
 
 class Learner(BaseLearner):
