@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from utils.inc_net import IncrementalNet,SimpleCosineIncrementalNet,MultiBranchCosineIncrementalNet,SimpleVitNet
 from models.base import BaseLearner
 from utils.toolkit import target2onehot, tensor2numpy
-
+import time 
 # tune the model at first session with adapter, and then conduct simplecil.
 num_workers = 8
 
