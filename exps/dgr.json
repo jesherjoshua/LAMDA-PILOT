@@ -1,6 +1,6 @@
 {
     "prefix": "reproduce",
-    "dataset": "cifar224",
+    "dataset": "cub",
     "memory_size": 2000,
     "memory_per_class": 20,
     "fixed_memory": false,
@@ -14,10 +14,10 @@
     "device": ["0"],
     "seed": [1993],
     
-    "init_epoch": 20,
+    "init_epoch": 10,
     "init_lr": 1e-3,
     "init_weight_decay": 5e-4,
-    "epochs": 20,
+    "epochs": 10,
     "lrate": 1e-3,
     "batch_size": 128,
     "weight_decay": 5e-4,
