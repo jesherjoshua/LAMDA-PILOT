@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from utils.inc_net import PromptVitNet
 from models.base import BaseLearner
 from utils.toolkit import tensor2numpy
-
+import time
 # tune the model at first session with vpt, and then conduct simple shot.
 num_workers = 8
 
