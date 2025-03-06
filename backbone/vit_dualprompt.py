@@ -853,7 +853,7 @@ def _create_vision_transformer(variant, pretrained=False, **kwargs):
         VisionTransformer, variant, pretrained,
         pretrained_cfg=pretrained_cfg,
         pretrained_filter_fn=checkpoint_filter_fn,
-        print(dir(pretrained_cfg))
+        print(pretrained_cfg.__dict__)
         pretrained_custom_load='npz' in pretrained_cfg.items()['url'],
         **kwargs)
     return model
